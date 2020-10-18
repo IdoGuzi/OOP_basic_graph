@@ -27,22 +27,23 @@ public class NodeData implements node_data{
 
     @Override
     public boolean hasNi(int key) {
-        Iterator<node_data> it = neighbor.iterator();
-        while(it.hasNext()){
-            node_data n = it.next();
-            if (n.getKey()==key) return true;
-        }
+        if (neighbor.size()>=key && neighbor.get(key-1).getKey()==key) return true;
+        int indexOfNi = binarySearch(neighbor,key);
+        if (indexOfNi>=-1) return true;
         return false;
     }
 
     @Override
     public void addNi(node_data t) {
-        neighbor.add(t);
+        if (neighbor.size()<t.getKey()-1) {
+            neighbor.add(t.getKey()-1, t);
+        }else neighbor.add(t);
     }
 
     @Override
     public void removeNode(node_data node) {
-        neighbor.remove(node);
+        int indexOfNi = binarySearch(neighbor, node.getKey());
+        if (indexOfNi!=-1) neighbor.remove(indexOfNi);
     }
 
     @Override
@@ -63,5 +64,22 @@ public class NodeData implements node_data{
     @Override
     public void setTag(int t) {
         tag=t;
+    }
+
+
+
+    //********* private ***********
+    private int binarySearch(ArrayList<node_data> nodes, int key){
+        int low=0, high;
+        if (nodes.size()>=key) {high=key;} else{high=nodes.size()-1;}
+        while (low<=high){
+            int middle = (low+high)/2;
+            int keyCheck = nodes.get(middle).getKey();
+            if (keyCheck==key) return middle;
+            if (keyCheck>key) {
+                high = middle-1;
+            }else low = middle+1;
+        }
+        return -1;
     }
 }
