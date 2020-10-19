@@ -19,11 +19,8 @@ public class Graph_DS implements graph{
 
     @Override
     public node_data getNode(int key) {
-        Iterator<node_data> it = nodes.iterator();
-        while (it.hasNext()){
-            node_data n = it.next();
-            if (n.getKey()==key) return n;
-        }
+        int indexOfNode= binarySearch(nodes, key);
+        if (indexOfNode!=-1) return nodes.get(indexOfNode);
         return null;
     }
 
@@ -36,7 +33,9 @@ public class Graph_DS implements graph{
 
     @Override
     public void addNode(node_data n) {
-        nodes.add(n);
+        if (nodes.size()<n.getKey()-1) {
+            nodes.add(n.getKey()-1, n);
+        }else nodes.add(n);
         nodeCount++;
         modeCount++;
     }
@@ -71,7 +70,9 @@ public class Graph_DS implements graph{
         while (it.hasNext()){
             node_data t = it.next();
             t.removeNode(n);
+            n.removeNode(t);
         }
+        nodeCount--;
         modeCount++;
         return n;
     }
@@ -98,5 +99,21 @@ public class Graph_DS implements graph{
     @Override
     public int getMC() {
         return modeCount;
+    }
+
+
+    //********* private ***********
+    private int binarySearch(ArrayList<node_data> nodes, int key){
+        int low=0, high;
+        if (nodes.size()>=key) {high=key;} else{high=nodes.size()-1;}
+        while (low<=high){
+            int middle = (low+high)/2;
+            int keyCheck = nodes.get(middle).getKey();
+            if (keyCheck==key) return middle;
+            if (keyCheck>key) {
+                high = middle-1;
+            }else low = middle+1;
+        }
+        return -1;
     }
 }

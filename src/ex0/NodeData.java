@@ -35,7 +35,7 @@ public class NodeData implements node_data{
 
     @Override
     public void addNi(node_data t) {
-        if (neighbor.size()<t.getKey()-1) {
+        if (neighbor.size()>t.getKey()-1) {
             neighbor.add(t.getKey()-1, t);
         }else neighbor.add(t);
     }
