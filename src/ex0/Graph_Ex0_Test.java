@@ -12,6 +12,7 @@ public class Graph_Ex0_Test {
     static graph_algorithms ga;
     public static void main(String[] args) {
         test1();
+        System.out.println("test1 done");
         System.out.println(g0);
         test2();
         System.out.println(g0);
@@ -24,10 +25,12 @@ public class Graph_Ex0_Test {
             node_data n = new NodeData();
             g0.addNode(n);
         }
+        System.out.println("added nodes");
         while(g0.edgeSize() < e_size) {
             int a = nextRnd(0,v_size);
             int b = nextRnd(0,v_size);
             g0.connect(a,b);
+            System.out.println(e_size-g0.edgeSize() + "edge left to add");
         }
        // System.out.println(g0);
     }

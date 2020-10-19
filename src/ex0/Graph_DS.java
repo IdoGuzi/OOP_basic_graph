@@ -2,48 +2,45 @@ package ex0;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class Graph_DS implements graph{
     private int nodeCount, edgeCount, modeCount;
-    private ArrayList<node_data> nodes;
+    private HashMap<Integer, node_data> nodes;
 
     public Graph_DS(){
         nodeCount=0;
         edgeCount=0;
         modeCount=0;
-        nodes = new ArrayList<>();
+        nodes = new HashMap<>();
     }
 
 
 
     @Override
     public node_data getNode(int key) {
-        int indexOfNode= binarySearch(nodes, key);
-        if (indexOfNode!=-1) return nodes.get(indexOfNode);
-        return null;
+        return nodes.get(key);
     }
 
     @Override
     public boolean hasEdge(int node1, int node2) {
-        node_data n1 = getNode(node1);
-        if (n1.hasNi(node2)) return true;
+        node_data n1 = getNode(node1), n2 = getNode(node2);
+        if (n1.hasNi(node2) && n2.hasNi(node1)) return true;
         return false;
     }
 
     @Override
     public void addNode(node_data n) {
-        if (nodes.size()<n.getKey()-1) {
-            nodes.add(n.getKey()-1, n);
-        }else nodes.add(n);
+        nodes.put(n.getKey(),n);
         nodeCount++;
         modeCount++;
     }
 
     @Override
     public void connect(int node1, int node2) {
+        if (hasEdge(node1,node2)) return;
         node_data n1 = getNode(node1), n2 = getNode(node2);
-        if (n1.hasNi(node2) && n2.hasNi(node1)) return;
         n1.addNi(n2);
         n2.addNi(n1);
         edgeCount++;
@@ -52,7 +49,7 @@ public class Graph_DS implements graph{
 
     @Override
     public Collection<node_data> getV() {
-        return nodes;
+        return nodes.values();
     }
 
     @Override
@@ -72,6 +69,7 @@ public class Graph_DS implements graph{
             t.removeNode(n);
             n.removeNode(t);
         }
+        nodes.remove(key);
         nodeCount--;
         modeCount++;
         return n;
@@ -79,6 +77,7 @@ public class Graph_DS implements graph{
 
     @Override
     public void removeEdge(int node1, int node2) {
+        if (hasEdge(node1,node2)) return;
         node_data n1 = getNode(node1), n2 = getNode(node2);
         n1.removeNode(n2);
         n2.removeNode(n1);
@@ -101,19 +100,4 @@ public class Graph_DS implements graph{
         return modeCount;
     }
 
-
-    //********* private ***********
-    private int binarySearch(ArrayList<node_data> nodes, int key){
-        int low=0, high;
-        if (nodes.size()>=key) {high=key;} else{high=nodes.size()-1;}
-        while (low<=high){
-            int middle = (low+high)/2;
-            int keyCheck = nodes.get(middle).getKey();
-            if (keyCheck==key) return middle;
-            if (keyCheck>key) {
-                high = middle-1;
-            }else low = middle+1;
-        }
-        return -1;
-    }
 }
