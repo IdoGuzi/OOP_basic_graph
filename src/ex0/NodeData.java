@@ -24,6 +24,13 @@ public class NodeData implements node_data{
         neighbor = new HashMap<>();
     }
 
+    public NodeData(node_data n){
+        this.key=n.getKey();
+        this.tag=n.getTag();
+        this.info=n.getInfo();
+        neighbor = new HashMap<>();
+    }
+
     @Override
     public int getKey() {
         return key;
@@ -75,7 +82,9 @@ public class NodeData implements node_data{
 
     @Override
     public void removeNode(node_data node) {
-        neighbor.remove(node.getKey(),node);
+        if (!neighbor.containsKey(node.getKey())) return;
+        neighbor.remove(node.getKey());
+        //neighbor.remove(node.getKey(),node);
     }
 
     @Override

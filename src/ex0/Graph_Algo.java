@@ -15,12 +15,13 @@ public class Graph_Algo implements graph_algorithms{
 
     @Override
     public void init(graph g) {
-
+        this.g=g;
     }
 
     @Override
     public graph copy() {
-        return null;
+        graph cop = new Graph_DS(g);
+        return cop;
     }
 
     @Override

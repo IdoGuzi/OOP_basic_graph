@@ -16,7 +16,27 @@ public class Graph_DS implements graph{
         nodes = new HashMap<>();
     }
 
-
+    public Graph_DS(graph g){
+        node_data n;
+        this.nodeCount=g.nodeSize();
+        this.edgeCount=g.edgeSize();
+        this.modeCount=g.getMC();
+        this.nodes = new HashMap<>();
+        Iterator<node_data> it = g.getV().iterator();
+        while (it.hasNext()){
+            n = it.next();
+            nodes.put(n.getKey(), new NodeData(n));
+        }
+        it = g.getV().iterator();
+        while (it.hasNext()){
+            n = it.next();
+            Iterator<node_data> iter = n.getNi().iterator();
+            while (iter.hasNext()){
+                node_data v = iter.next();
+                connect(n.getKey(),v.getKey());
+            }
+        }
+    }
 
     @Override
     public node_data getNode(int key) {
@@ -62,12 +82,14 @@ public class Graph_DS implements graph{
     public node_data removeNode(int key) {
         node_data n = getNode(key);
         if (n==null) return null;
-        Collection<node_data> edges = n.getNi();
-        Iterator<node_data> it = edges.iterator();
+        ArrayList<node_data> adj = new ArrayList<>();
+        Iterator<node_data> it = n.getNi().iterator();
         while (it.hasNext()){
             node_data t = it.next();
-            t.removeNode(n);
-            n.removeNode(t);
+            adj.add(t);
+        }
+        for (int i=0;i<adj.size();i++){
+            adj.get(i).removeNode(n);
         }
         nodes.remove(key);
         nodeCount--;
