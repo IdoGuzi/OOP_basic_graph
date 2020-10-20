@@ -1,9 +1,7 @@
 package ex0;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class NodeData implements node_data{
     private int key, tag;
