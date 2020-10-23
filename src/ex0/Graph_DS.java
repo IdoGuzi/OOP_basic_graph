@@ -46,7 +46,12 @@ public class Graph_DS implements graph{
     @Override
     public boolean hasEdge(int node1, int node2) {
         node_data n1 = getNode(node1), n2 = getNode(node2);
+        if (n1==null || n2==null) return false;
+        if (node1==node2) return false;
         if (n1.hasNi(node2) && n2.hasNi(node1)) return true;
+        if ((n1.hasNi(node2) && !n2.hasNi(node1)) ||
+                (n2.hasNi(node1) && !n1.hasNi(node2)))
+                    throw new RuntimeException("Error: graph should be undirectional");
         return false;
     }
 
@@ -59,8 +64,14 @@ public class Graph_DS implements graph{
 
     @Override
     public void connect(int node1, int node2) {
-        if (hasEdge(node1,node2)) return;
         node_data n1 = getNode(node1), n2 = getNode(node2);
+        if (n1==null || n2==null) return;
+        if (node1==node2) return;
+        if (hasEdge(node1,node2)) return;
+        if ((n1.hasNi(node2) && !n2.hasNi(node1)) ||
+                (n2.hasNi(node1) && !n1.hasNi(node2))){
+            throw new RuntimeException("Error: both should be connected or not connected");
+        }
         n1.addNi(n2);
         n2.addNi(n1);
         edgeCount++;
@@ -99,7 +110,7 @@ public class Graph_DS implements graph{
 
     @Override
     public void removeEdge(int node1, int node2) {
-        if (hasEdge(node1,node2)) return;
+        if (!hasEdge(node1,node2)) return;
         node_data n1 = getNode(node1), n2 = getNode(node2);
         n1.removeNode(n2);
         n2.removeNode(n1);

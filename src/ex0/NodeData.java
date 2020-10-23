@@ -38,40 +38,12 @@ public class NodeData implements node_data{
     public Collection<node_data> getNi() {
         return neighbor.values();
     }
-    /*
-    @Override
-    public boolean hasNi(int key) {
-        if (this.key==key) return true; //will maybe changed
-        if (neighbor.size()>key){
-            if (key<this.key){
-                if (key==neighbor.get(key).getKey()) return true;
-            }else{
-                if (key==neighbor.get(key-1).getKey()) return true;
-            }
-        }
-        int indexOfNi = binarySearch(neighbor,key);
-        System.out.println("binary search failed");
-        if (indexOfNi>-1) return true;
-        return false;
-    }
 
-     */
     @Override
     public boolean hasNi(int key) {
         if (neighbor.get(key)!=null) return true;
         return false;
     }
-
-    /*
-    @Override
-    public boolean hasNi(int key) {
-        Iterator<node_data> it = neighbor.iterator();
-        while (it.hasNext()){
-            if (it.next().getKey()==key) return true;
-        }
-        return false;
-    }
-     */
 
     @Override
     public void addNi(node_data t) {
@@ -82,7 +54,6 @@ public class NodeData implements node_data{
     public void removeNode(node_data node) {
         if (!neighbor.containsKey(node.getKey())) return;
         neighbor.remove(node.getKey());
-        //neighbor.remove(node.getKey(),node);
     }
 
     @Override
