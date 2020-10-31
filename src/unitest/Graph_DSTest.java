@@ -2,15 +2,23 @@ package unitest;
 
 import ex0.*;
 import org.junit.jupiter.api.Test;
-
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * this class in an UnitTest for the @Graph_DS class,
+ * the functions in this class testing the method in @Graph_DS
+ * to make sure they work correctly.
+ * @author Ido Guzi
+ */
 class Graph_DSTest {
 
+
+    /**
+     * test function for the getNode method
+     * assumptions: getV() method working.
+     */
     @Test
     void getNode() {
         graph g = factory(50,137);
@@ -21,6 +29,11 @@ class Graph_DSTest {
         }
     }
 
+
+    /**
+     * test function for the hasEdge method
+     * assumptions: edgeSize, getV, getV(int) working.
+     */
     @Test
     void hasEdge() {
         graph g = factory(50,150);
@@ -48,6 +61,10 @@ class Graph_DSTest {
         assertEquals(g.edgeSize(),countOneOne/2);
     }
 
+    /**
+     * test function for the addNode method
+     * assumptions: nodeSize working
+     */
     @Test
     void addNode() {
         graph g = new Graph_DS();
@@ -56,10 +73,14 @@ class Graph_DSTest {
             node_data n = new NodeData();
             g.addNode(n);
             count++;
-            if (count!=g.nodeSize()) fail("Error: missed a node");
+            assertEquals(count, g.nodeSize());
         }
     }
 
+    /**
+     * test function for the connect method.
+     * assumtions: addNode, hasEdge, edgeSize working.
+     */
     @Test
     void connect() {
         graph g = new Graph_DS();
@@ -84,16 +105,24 @@ class Graph_DSTest {
 
     }
 
+    /**
+     * test function for the getV method
+     * assumptions: getNode working
+     */
     @Test
     void getV() {
         graph g = factory(74,200);
         Iterator<node_data> it = g.getV().iterator();
         while (it.hasNext()){
             node_data n = it.next();
-            if (n!=g.getNode(n.getKey())) fail("Error: nodes should be the same");
+            assertEquals(n, g.getNode(n.getKey()));
         }
     }
 
+    /**
+     * test function for the getV(int) method
+     * assumptions: getV(), hasEdge working.
+     */
     @Test
     void testGetV() {
         graph g = factory(67,154);
@@ -103,11 +132,15 @@ class Graph_DSTest {
             Iterator<node_data> it = g.getV(n.getKey()).iterator();
             while (it.hasNext()){
                 node_data v = it.next();
-                if (!g.hasEdge(n.getKey(), v.getKey())) fail("Error: should have edge");
+                assertEquals(g.hasEdge(n.getKey(), v.getKey()), true);
             }
         }
     }
 
+    /**
+     * test function for the removeNode method.
+     * assumptions: getV(), hasEdge, getNode working.
+     */
     @Test
     void removeNode() {
         graph g = factory(67,154);
@@ -122,6 +155,10 @@ class Graph_DSTest {
         }
     }
 
+    /**
+     * test function for the removeEdge method.
+     * assumptions: edgeSize, hasEdge working.
+     */
     @Test
     void removeEdge() {
         graph g = factory(100,300);
@@ -131,12 +168,16 @@ class Graph_DSTest {
             boolean before = g.hasEdge(a,b);
             g.removeEdge(a,b);
             if (before){
-                if (g.hasEdge(a,b)) fail("Error: edge should have been deleted");
+                assertEquals(g.hasEdge(a,b), false);
             }
         }
 
     }
 
+    /**
+     * test function for the nodeSize method.
+     * assumptions: addNode working.
+     */
     @Test
     void nodeSize() {
         graph g = factory(30,68);
@@ -147,6 +188,11 @@ class Graph_DSTest {
         }
     }
 
+
+    /**
+     * test function for the edgeSize method.
+     * assumptions: hasEdge, connect working.
+     */
     @Test
     void edgeSize() {
         graph g = factory(47,0);
@@ -158,15 +204,18 @@ class Graph_DSTest {
             boolean beforeCon = g.hasEdge(a,b);
             if (!beforeCon) {
                 g.connect(a, b);
-                if (g.hasEdge(a, b) && beforeSize+1!=g.edgeSize()){
-                    fail("Error: didn't increment edge size but added an edge");
-                }
+                assertEquals(g.hasEdge(a, b) && beforeSize+1!=g.edgeSize(), true);
             }
             counter++;
         }
     }
 
-
+    /**
+     * create a graph with #nodes and #edges
+     * @param nodes - number of nodes
+     * @param edges - number of edges
+     * @return a graph object
+     */
     private graph factory(int nodes, int edges){
         graph g = new Graph_DS();
         for (int i=0;i<nodes;i++){

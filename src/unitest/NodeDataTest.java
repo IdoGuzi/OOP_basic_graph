@@ -2,13 +2,18 @@ package unitest;
 
 import ex0.*;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * this class is a UnitTest class for the NodeData class
+ * that ensure the class methods are working as intended.
+ */
 class NodeDataTest {
 
+    /**
+     * basic tests for some of the methods.
+     */
     @Test
     void generalTesting(){
         node_data v, n = new NodeData();
@@ -26,6 +31,9 @@ class NodeDataTest {
 
     }
 
+    /**
+     * basic testing for the getters and setters.
+     */
     @Test
     void settersGetters(){
         node_data n = new NodeData();
@@ -39,6 +47,9 @@ class NodeDataTest {
 
     }
 
+    /**
+     * test function for the getKey method.
+     */
     @Test
     void getKey(){
         ArrayList<node_data> a = factory(47);
@@ -47,6 +58,9 @@ class NodeDataTest {
         }
     }
 
+    /**
+     * test function for the getNi method.
+     */
     @Test
     void getNi(){
         ArrayList<node_data> a = factory(20);
@@ -64,6 +78,9 @@ class NodeDataTest {
 
     }
 
+    /**
+     * test function for the addNi method.
+     */
     @Test
     void addNi(){
         ArrayList<node_data> a = factory(34);
@@ -74,6 +91,9 @@ class NodeDataTest {
         }
     }
 
+    /**
+     * test function for the removeNode method.
+     */
     @Test
     void removeNode(){
         ArrayList<node_data> a = factory(32);
@@ -90,7 +110,12 @@ class NodeDataTest {
         }
     }
 
-
+    /**
+     * this function construct an arraylist of nodes
+     * to clean some of the test function.
+     * @param nodes - number of nodes to cconstruct.
+     * @return an arraylist with nodes.
+     */
     private ArrayList<node_data> factory(int nodes){
         ArrayList<node_data> arr = new ArrayList<>();
         for (int i=0;i<nodes;i++){
