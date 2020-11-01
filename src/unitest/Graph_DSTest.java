@@ -4,6 +4,8 @@ import ex0.*;
 import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -13,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Ido Guzi
  */
 class Graph_DSTest {
+    private static Random rand = new Random();
 
 
     /**
@@ -90,8 +93,8 @@ class Graph_DSTest {
             g.addNode(n);
         }
         while(g.edgeSize() < g.nodeSize()*3) {
-            int a = Graph_Ex0_Test.nextRnd(0,g.nodeSize());
-            int b = Graph_Ex0_Test.nextRnd(0,g.nodeSize());
+            int a = nextRnd(0,g.nodeSize());
+            int b = nextRnd(0,g.nodeSize());
             boolean before = g.hasEdge(a,b);
             g.connect(a,b);
             if (!before && g.hasEdge(a,b)) {
@@ -163,8 +166,8 @@ class Graph_DSTest {
     void removeEdge() {
         graph g = factory(100,300);
         while (g.edgeSize()>=200) {
-            int a = Graph_Ex0_Test.nextRnd(0, g.nodeSize());
-            int b = Graph_Ex0_Test.nextRnd(0, g.nodeSize());
+            int a = nextRnd(0, g.nodeSize());
+            int b = nextRnd(0, g.nodeSize());
             boolean before = g.hasEdge(a,b);
             g.removeEdge(a,b);
             if (before){
@@ -198,13 +201,19 @@ class Graph_DSTest {
         graph g = factory(47,0);
         int counter=0;
         while (counter<150){
-            int a = Graph_Ex0_Test.nextRnd(0, g.nodeSize());
-            int b = Graph_Ex0_Test.nextRnd(0, g.nodeSize());
+            int a = nextRnd(0, g.nodeSize());
+            int b = nextRnd(0, g.nodeSize());
             int beforeSize = g.edgeSize();
             boolean beforeCon = g.hasEdge(a,b);
+            g.connect(a, b);
             if (!beforeCon) {
-                g.connect(a, b);
-                assertEquals(g.hasEdge(a, b) && beforeSize+1!=g.edgeSize(), true);
+                if (a==b){
+                    assertEquals(true, !g.hasEdge(a, b) && beforeSize==g.edgeSize());
+                }else {
+                    assertEquals(true, g.hasEdge(a, b) && beforeSize+1==g.edgeSize());
+                }
+            }else {
+                assertEquals(true,g.hasEdge(a, b) && beforeSize==g.edgeSize());
             }
             counter++;
         }
@@ -223,8 +232,8 @@ class Graph_DSTest {
         }
         int count = 0;
         while(g.edgeSize() < edges) {
-            int a = Graph_Ex0_Test.nextRnd(0,nodes);
-            int b = Graph_Ex0_Test.nextRnd(0,nodes);
+            int a = nextRnd(0,nodes);
+            int b = nextRnd(0,nodes);
             boolean beforeCon = g.hasEdge(a,b);
             g.connect(a,b);
             if (!beforeCon && g.hasEdge(a,b)) count++;
@@ -238,6 +247,14 @@ class Graph_DSTest {
         if (count != edges) fail("Error: didn't add to amount, count="+count+", edges="+edges);
         if (g.edgeSize()!=edges) fail("Error: didn't add to amount");
         return g;
+    }
+
+
+    private int nextRnd(int min,int max){
+        double d = rand.nextDouble();
+        double dx = max-min;
+        double ans = d*dx+min;
+        return (int)ans;
     }
 
 }

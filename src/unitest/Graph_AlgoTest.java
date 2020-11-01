@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Ido Guzi
  */
 class Graph_AlgoTest {
+    private static Random rand=new Random();
 
     /**
      * test function for the init method.
@@ -58,17 +60,17 @@ class Graph_AlgoTest {
     void isConnected() {
         graph_algorithms ga = new Graph_Algo();
         for (int i=0;i<100;i++) {
-            int a = Graph_Ex0_Test.nextRnd(2, 300);
-            int b = Graph_Ex0_Test.nextRnd(0, a-1);
+            int a = nextRnd(2, 300);
+            int b = nextRnd(0, a-1);
             graph notCon = factory(a, b);
             ga.init(notCon);
             assertEquals(false, ga.isConnected());
         }
         for (int i=0;i<100;i++) {
-            int a = Graph_Ex0_Test.nextRnd(0, 300);
+            int a = nextRnd(1, 300);
             //random number that promise the graph will be connected.
             int min=((a-1)*(a-1)-a+1)/2+1,max=((a*a)-a)/2;
-            int b = Graph_Ex0_Test.nextRnd(min, max);
+            int b = nextRnd(min, max);
             graph con = factory(a, b);
             ga.init(con);
             assertEquals(true, ga.isConnected());
@@ -133,17 +135,16 @@ class Graph_AlgoTest {
         }
         int count = 0;
         while(g.edgeSize() < edges) {
-            int a = Graph_Ex0_Test.nextRnd(0,nodes);
-            int b = Graph_Ex0_Test.nextRnd(0,nodes);
-            boolean beforeCon = g.hasEdge(a,b);
-            g.connect(a,b);
-            if (!beforeCon && g.hasEdge(a,b)) count++;
-            node_data n=g.getNode(a),v=g.getNode(b);
-            if (!g.hasEdge(a,b) &&
-                    (n.hasNi(v.getKey()) && !v.hasNi(n.getKey())) &&
-                    (v.hasNi(n.getKey()) && !n.hasNi(v.getKey()))){
-                fail("Error: didn't connect");
-            }
+            int a = nextRnd(0, nodes);
+            int b = nextRnd(0, nodes);
+            boolean beforeCon = g.hasEdge(a, b);
+            g.connect(a, b);
+            if (!beforeCon && g.hasEdge(a, b)) count++;
+            node_data n = g.getNode(a), v = g.getNode(b);
+            if (a!=b && !g.hasEdge(a,b)) {fail("Error: didn't connect");}
+            boolean nhv=n.hasNi(b),vhn=v.hasNi(a);
+            if ((nhv && !vhn) || (vhn && !nhv)) fail("ERROR: impossible");
+
         }
         if (count != edges) fail("Error: didn't add to amount, count="+count+", edges="+edges);
         if (g.edgeSize()!=edges) fail("Error: didn't add to amount");
@@ -158,4 +159,12 @@ class Graph_AlgoTest {
         }
         return false;
     }
+
+    private int nextRnd(int min,int max){
+        double d = rand.nextDouble();
+        double dx = max-min;
+        double ans = d*dx+min;
+        return (int)ans;
+    }
+
 }

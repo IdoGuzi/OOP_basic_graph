@@ -3,6 +3,8 @@ package unitest;
 import ex0.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -10,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * that ensure the class methods are working as intended.
  */
 class NodeDataTest {
+    private static Random rand = new Random();
 
     /**
      * basic tests for some of the methods.
@@ -66,14 +69,14 @@ class NodeDataTest {
         ArrayList<node_data> a = factory(20);
         ArrayList<Integer> ni = new ArrayList<>();
         for (int i=1;i<a.size();i++){
-            int n = Graph_Ex0_Test.nextRnd(0,100);
+            int n = nextRnd(0,100);
             if (n>=50) {
                 a.get(0).addNi(a.get(i));
                 ni.add(i);
             }
         }
         for (int i=0;i<ni.size();i++){
-            assertEquals(a.get(0).hasNi(ni.get(i)), true);
+            assertEquals(true, a.get(0).hasNi(ni.get(i)));
         }
 
     }
@@ -122,6 +125,13 @@ class NodeDataTest {
             arr.add(i,new NodeData(i));
         }
         return arr;
+    }
+
+    private int nextRnd(int min,int max){
+        double d = rand.nextDouble();
+        double dx = max-min;
+        double ans = d*dx+min;
+        return (int)ans;
     }
 
 

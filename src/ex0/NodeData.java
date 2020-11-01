@@ -19,12 +19,14 @@ public class NodeData implements node_data{
     public NodeData(){
         key=keyCount++;
         tag=0;
+        info="";
         neighbor = new HashMap<>();
     }
 
     public NodeData(int key){
         this.key=key;
         tag=0;
+        info="";
         neighbor = new HashMap<>();
     }
 
