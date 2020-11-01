@@ -13,7 +13,7 @@ can be downloaded from this repository as a zip,
 or by git.
 
 ```bash
-git clone https://github.com/IdoGuzi/OOP_Ex0.git
+git clone https://github.com/IdoGuzi/OOP_graph.git
 ```
 
 ## Usage
